@@ -10,7 +10,7 @@ local Emitter = require("ws.emitter")
 
 local uv = vim.loop
 
-local function WebSocketClient(address)
+local function WebSocketClient(address, protocol)
   local self = {}
   local receiver
   local sender
@@ -22,7 +22,7 @@ local function WebSocketClient(address)
   local opening_handshake_sender = OpeningHandshakeSender:new({
     websocket_key = websocket_key,
     address = address,
-  })
+  }, protocol)
 
   local tcp_client = uv.new_tcp()
 

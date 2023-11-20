@@ -2,11 +2,12 @@ local WebSocketKey = require("ws.websocket_key")
 
 local OpeningHandshakeSender = {}
 
-function OpeningHandshakeSender:new(o)
+function OpeningHandshakeSender:new(o, proto)
   o = o or {}
   o.websocket_key = o.websocket_key or WebSocketKey:create()
   setmetatable(o, self)
   self.__index = self
+  self.proto = proto
   return o
 end
 
@@ -18,7 +19,9 @@ function OpeningHandshakeSender:send(client)
   client:write("Upgrade: websocket\r\n")
   client:write("Connection: Upgrade\r\n")
   client:write("Sec-WebSocket-Key: " .. self.websocket_key:tostring() .. "\r\n")
+  client:write("Sec-WebSocket-Protocol: " .. self.proto .. "\r\n")
   client:write("Sec-WebSocket-Version: 13\r\n")
+  -- client:write("Sec-WebSocket-Protocal: "..self.protocal.."\r\n")
   client:write("\r\n")
 end
 
